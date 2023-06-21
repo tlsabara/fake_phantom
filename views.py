@@ -24,4 +24,4 @@ def request_recived_repot():
         'requests_recived_timestamp': request_._asdict().pop("TbRequestsRecived").requests_recived_timestamp
     } for request_ in requests_list]
     template_vars = {"request_list": requests_list}
-    return render_template_like_flask('request_recived_report.html.jinja', template_vars)
+    return render_template_like_flask('request_recived_report.html', template_vars)

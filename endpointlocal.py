@@ -22,6 +22,8 @@ class APIServer(BaseHTTPRequestHandler):
         msg_get_response = route_get_urls(self.path)
 
         if msg_get_response is False:
+            length = int(self.headers["Content-Length"] or 0)
+            insert_request_data(self.path, self.rfile.read(length).decode('UTF-8'))
             content_type = 'application/json'
             clean_response = 'GET respondido'
             msg_get_response = collect_response_data(where_tag="def_GET_200")
@@ -48,7 +50,7 @@ class APIServer(BaseHTTPRequestHandler):
         self.end_headers()
 
         clean_response = 'POST respondido'
-        length = int(self.headers["Content-Length"])
+        length = int(self.headers["Content-Length"] or 0)
 
         insert_request_data(self.path, self.rfile.read(length).decode('UTF-8'))
         msg_get_response = collect_response_data(where_tag="def_POST_200")
@@ -63,12 +65,15 @@ class APIServer(BaseHTTPRequestHandler):
         print(self.headers)
         print("PUT hora: ", timestamp_)
         print(self.headers.as_string())
-        length = int(self.headers["Content-Length"])
+
+        length = int(self.headers["Content-Length"] or 0)
+        insert_request_data(self.path, self.rfile.read(length).decode('UTF-8'))
+
         clean_response = 'PUT respondido'
         self.send_response(200)
         self.send_header('Content-type', 'application/json')
         self.end_headers()
-        insert_request_data(self.path, str(self.rfile.read(length)))
+
         msg_get_response = collect_response_data(where_tag="def_PUT_200")
         msg_get_response = msg_get_response if msg_get_response else clean_response
         self.wfile.write(bytes(msg_get_response, 'utf-8'))
@@ -77,7 +82,7 @@ class APIServer(BaseHTTPRequestHandler):
 
 if __name__ == '__main__':
     print('Iniciando ENDPOINT')
-    FILE_LOG = ROOT_DIR / 'app_logs' / f'run_{datetime.now().strftime("%Y%m%d%H%M%S")}'
+    FILE_LOG = ROOT_DIR / 'fake_phantom' / f'run_{datetime.now().strftime("%Y%m%d%H%M%S")}'
     FILE_LOG.mkdir(parents=True, exist_ok=True)
     FILE_LOG = FILE_LOG
     print('Carregando DB')

@@ -1,0 +1,48 @@
+version: "3.9"
+
+#------------------------------------------------------#
+#     Uncoment lines to use postgree to store data     #
+#------------------------------------------------------#
+
+services:
+#  db:
+#    restart: always
+#    build:
+#      context: ./postgree_db
+#      dockerfile: Dockerfile
+#    ports:
+#      - "5432:5432"
+#    environment:
+#      - POSTGRES_USER=postgres
+#      - POSTGRES_PASSWORD=postgres
+#      - POSTGRES_DB=fake_gaspar
+
+  projeto_fake_phantom:
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - API_KEY=${MINHA_KEY_NO_ENV}
+      # - DATABASE_URL_ENDPOINT=postgresql://postgres:postgres@db:5432/fake_gaspar
+      - DATABASE_URL_ENDPOINT=sqlite+pysqlite:///foo.db
+    volumes:
+      - type: bind
+        source: ./bind_mounts/fake_phantom
+        target: /code/fake_phantom
+#    depends_on:
+#      - db
+
+#  pgadmin:
+#    restart: always
+#    container_name: pgadmin
+#    image: dpage/pgadmin4
+#    environment:
+#      - PGADMIN_DEFAULT_EMAIL=t@t.com
+#      - PGADMIN_DEFAULT_PASSWORD=admin
+#    ports:
+#      - "5050:80"
+#    depends_on:
+#      - db
