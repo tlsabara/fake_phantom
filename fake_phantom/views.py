@@ -3,7 +3,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 
 def render_template_like_flask(template_namefile:str, jinja_vars:dict):
-    environment = Environment(loader=FileSystemLoader("./templates/"), autoescape=select_autoescape(['html', 'xml']))
+    environment = Environment(loader=FileSystemLoader("templates/"), autoescape=select_autoescape(['html', 'xml']))
     template = environment.get_template(template_namefile)
     try:
         return template.render(

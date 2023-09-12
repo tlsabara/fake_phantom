@@ -27,7 +27,6 @@ def auth():
 @app.route(f'/api/{MAIN_VERSION}/number', methods=['GET', 'POST'])
 @jwt_required()
 def get_random_number():
-    # Aqui você pode gerar um número aleatório de 1 a 1000
     import random
     number = random.randint(1, 1000)
     return jsonify({'number': number}), 200
@@ -41,8 +40,6 @@ def home():
 @app.route('/<path:any_path>',  methods=['GET', 'POST'])
 def any_route(any_path):
     return jsonify({'msg': f'O caminho fornecido foi: {any_path}'})
-
-
 
 
 if __name__ == '__main__':

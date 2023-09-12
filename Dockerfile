@@ -11,4 +11,4 @@ COPY ./ $ROOT_DIR
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-CMD python ./endpointlocal.py
+CMD python ./fake_phamtom/endpointlocal.py

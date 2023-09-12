@@ -1,10 +1,9 @@
-import time
 from datetime import datetime
 
 from sqlalchemy import select
 
-from logs import fn_app_log
-from orm.models import Session, Base, engine, TbDefaultResponses, TbRequestsRecived
+from fake_phantom.logs import fn_app_log
+from fake_phantom.orm.models import Session, Base, engine, TbDefaultResponses, TbRequestsRecived
 
 
 def collect_last_50_recived_requests():
