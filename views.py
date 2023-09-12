@@ -1,17 +1,17 @@
 from orm import queries
-from jinja2 import Environment, FileSystemLoader
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 
 def render_template_like_flask(template_namefile:str, jinja_vars:dict):
-    environment = Environment(loader=FileSystemLoader("./templates/"))
+    environment = Environment(loader=FileSystemLoader("./templates/"), autoescape=select_autoescape(['html', 'xml']))
     template = environment.get_template(template_namefile)
     try:
         return template.render(
             **jinja_vars
-        ).encode()
-        print('corotinhas')
+        )  # .encode('utf-8')
     except Exception as e:
-        print('corotinhas2')
+        print(e)
+        # TODO: dmp error on log file
         return False
 
 
