@@ -2,6 +2,7 @@ import os
 from flask import Flask, jsonify, request
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token
 from dotenv import load_dotenv
+import fake_phantom.router as router
 
 load_dotenv()
 app = Flask(__name__)
@@ -12,16 +13,8 @@ MAIN_VERSION = 'v1'
 
 
 @app.route(f'/api/{MAIN_VERSION}/auth', methods=['POST'])
-def auth():
-    username = request.json.get('username')
-    password = request.json.get('password')
-
-    if username == 'admin' and password == 'password':
-        access_token = create_access_token(identity=username)
-
-        return jsonify({'access_token': access_token}), 200
-    else:
-        return jsonify({'error': 'Credenciais inválidas'}), 401
+def auth_route():
+    return router.auth(request)
 
 
 @app.route(f'/api/{MAIN_VERSION}/number', methods=['GET', 'POST'])
@@ -33,14 +26,16 @@ def get_random_number():
 
 
 @app.route("/")
-def home():
-    return jsonify({'msg': 'hooooome'})
+def home_route():
+    return router.home()
 
 
 @app.route('/<path:any_path>',  methods=['GET', 'POST'])
 def any_route(any_path):
-    return jsonify({'msg': f'O caminho fornecido foi: {any_path}'})
-
+    return router.whitelabel(
+        any_path=any_path,
+        req=request
+    )
 
 if __name__ == '__main__':
     app.run()
