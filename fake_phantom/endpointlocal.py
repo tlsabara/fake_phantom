@@ -1,4 +1,5 @@
 import os
+import random
 from flask import Flask, jsonify, request
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token
 from dotenv import load_dotenv
@@ -20,7 +21,6 @@ def auth_route():
 @app.route(f'/api/{MAIN_VERSION}/number', methods=['GET', 'POST'])
 @jwt_required()
 def get_random_number():
-    import random
     number = random.randint(1, 1000)
     return jsonify({'number': number}), 200
 
